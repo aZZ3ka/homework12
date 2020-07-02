@@ -4,7 +4,7 @@ session_start();
 
 class Main
 {
-    public function container(array $data, $i)
+    private function container(array $data, $i)
     {
         
         if($i <= 3){
@@ -51,7 +51,7 @@ class Main
     }
     }
 
-    public function Questions()
+    private function Questions()
     {
         return [
             '0' => [
@@ -97,21 +97,25 @@ class Main
         ];
     }
 
-    private function getQuestion()
+    public function getQuestion()
     {
+        if ($_POST) {
+            $_SESSION['user'][] = 'GoodDayCommander';
+            $i = count($_SESSION['user']);
+            $array = $this->Questions();
+            $this->container($array, $i);
+            $_SESSION['answers'][] = $_POST;
+        } else {
+            $array = $this->Questions();
+            $this->container($array, $i = 0);
+        }
+        return;
     }
 }
-$a = new Main();
-if($_POST){
-    $_SESSION['user'][] = 'GoodDayCommander';
-    $i = count($_SESSION['user']);
-    $array = $a->Questions();
-    $a->container($array, $i);
-    $_SESSION['answers'][] = $_POST;
-}else{
-    $array = $a->Questions();
-    $a->container($array, $i = 0);
-}
+
+$a = new Main;
+$a->getQuestion();
+
 // var_dump($_POST);
 // var_dump($_SESSION);
 
